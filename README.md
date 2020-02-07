@@ -57,7 +57,8 @@ Script to pull various forms of information out of BloodHound including lists of
 - All Domain Users
 - All Domain Admins
 - All Computers/Users configured with Unconstrained Delegation
-- Computers that an input ```user``` has local administrator privileges over
+- Computers that an input user ```UNAME``` has local administrator privileges over
+- Users that are administrators of input computer ```COMP```
 
 #### Usage
 
@@ -66,7 +67,7 @@ Add your Neo4j username and password to the start of the script
 
 ```
 usage: get_info.py [-h]
-                   (--spns | --users | --da | --unconstrained | --adminto UNAME)
+                   (--spns | --users | --da | --unconstrained | --adminto UNAME | --adminsof COMP)
 
 Helper script to pull lists of information from BloodHound for use
 
@@ -82,6 +83,7 @@ Main Arguments:
                    Delegation
   --adminto UNAME  Return a list of computers that UNAME is a local
                    administrator to
+  --adminsof COMP  Return a list of users that are administrators to COMP
 ```
 
 Examples
@@ -91,5 +93,5 @@ python3 get_info.py --users
 python3 get_info.py --da
 python3 get_info.py --unconstrained
 python3 get_info.py --adminto user01@domain.local
+python3 get_info.py --adminsof computer01.domain.local
 ```
-

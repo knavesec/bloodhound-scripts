@@ -17,7 +17,8 @@ def do_query(args):
         "users" : "MATCH (n:User) RETURN n.name",
         "das" : "MATCH p =(n:User)-[r:MemberOf*1..]->(g:Group) where g.name=~'DOMAIN ADMINS@.*' return n.name",
         "unconstrained" : "MATCH (n) WHERE n.unconstraineddelegation=TRUE RETURN n.name",
-        "local-admin" : "MATCH p=shortestPath((m:User {{name:\"{uname}\"}})-[r:AdminTo|MemberOf*1..]->(n:Computer)) return n.name,m.name"
+        "local-admin" : "MATCH p=shortestPath((m:User {{name:\"{uname}\"}})-[r:AdminTo|MemberOf*1..]->(n:Computer)) return n.name",
+        "adminsOf" : "MATCH p=shortestPath((m:Computer {{name:\"{comp}\"}})<-[r:AdminTo|MemberOf*1..]-(n:User)) return n.name"
     }
 
     query = ""
@@ -29,8 +30,11 @@ def do_query(args):
         query = queries["das"]
     elif (args.unconstrained):
         query = queries["unconstrained"]
-    else:
+    elif (args.uname != ""):
         query = queries["local-admin"].format(uname=args.uname.upper().strip())
+    elif (args.comp != ""):
+        query = queries["adminsOf"].format(comp=args.comp.upper().strip())
+
 
     data = {"statements":[{"statement":query}]}
     headers = {'Content-type': 'application/json', 'Accept': 'application/json; charset=UTF-8'}
@@ -57,6 +61,7 @@ def main():
     mutex_group.add_argument("--da",dest="das",default=False,action="store_true",help="Return a list of all Domain Admins")
     mutex_group.add_argument("--unconstrained",dest="unconstrained",default=False,action="store_true",help="Return a list of all objects configured with Unconstrained Delegation")
     mutex_group.add_argument("--adminto",dest="uname",default="",help="Return a list of computers that UNAME is a local administrator to")
+    mutex_group.add_argument("--adminsof",dest="comp",default="",help="Return a list of users that are administrators to COMP")
 
     args = parser.parse_args()
 
