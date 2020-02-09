@@ -4,7 +4,22 @@
 
 Neo4j is the backend database that combines nodes and relationship edges to display and connect data in new ways. In this case, BloodHound nodes are AD objects and edges are ACL and privilege escalation relationships between the nodes. This provides lateral movement and pivoting
 
-### Node Type
+### Nodes and Node Types
+
+Nodes are essentially just an object that holds data. In Bloodhound, these are Active Directory objects
+
+```
+-----------------
+|node     -data |
+|         -data2|
+|         -data3|
+-----------------
+```
+
+Return all nodes
+```
+MATCH (n) RETURN n
+```
 
 Creating a raw node is simple, but it's often beneficial to group nodes into certain types. These types can be queried during searches and grouped easier.
 
