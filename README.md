@@ -1,5 +1,13 @@
 # Bloodhound helper scripts and docs
 
+## custom_queries.md
+
+#### Description
+
+Markup file with two parts:
+1. Describe in short some of the basics of Cypher queries and how they apply to BloodHound. The goal is to teach enough to get started creating custom queries
+2. List custom queries that could be helpful in maximizing BH usage 
+
 ## add_owned.py
 
 #### Description
