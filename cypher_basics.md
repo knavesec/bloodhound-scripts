@@ -83,6 +83,20 @@ Notes:
 - Note the `>` to indicate direction of the edge in the first (which requires a direction) but not the second (which is general and doesn't require a direction)
 - Additional way to specify attributes `{attr:value}`
 
+
+Traversing from node to node is commonly called a hop, and we can specify how many hops we would like to return within the edge declaration
+1. One hop
+2. One to three hops
+3. All hops
+
+```
+1. MATCH (n:User), (m:Computer) MATCH p=(n)-[r:AdminTo|HasSession]->(m)  RETURN p
+
+2. MATCH (n:User), (m:Computer) MATCH p=(n)-[r:AdminTo|HasSession*1..3]->(m)  RETURN p
+
+3. MATCH (n:User), (m:Computer) MATCH p=(n)-[r:AdminTo|HasSession*1..]->(m)  RETURN p
+```
+
 BloodHound general edges:
 - AdminTo
 - HasSession
