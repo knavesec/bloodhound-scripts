@@ -66,14 +66,18 @@ MATCH (n:User) WHERE n.name=~'USER1@DOMAIN.LOCAL' MATCH (m:Group) WHERE m.name =
 2. MATCH (n) WHERE n.name="DOMAIN USERS@DOMAIN.LOCAL" MATCH (n)-[r:EDGE]-() DELETE r
 ```
 
-### Shortest path from user to unconstrained delegation systems
+### Shortest path from user to unconstrained delegation systems (second is with option to search without specific edges)
 
 ```
+MATCH (n) WHERE n.name='username' MATCH (m) WHERE m.unconstraineddelegation=True MATCH p=allShortestPaths((n)-[r*1..]->(m)) RETURN p
+
 MATCH (n) WHERE n.name='username' MATCH (m) WHERE m.unconstraineddelegation=True MATCH p=allShortestPaths((n)-[r:MemberOf|HasSession|AdminTo|AllExtendedRights|AddMember|ForceChangePassword|GenericAll|GenericWrite|Owns|WriteDacl|WriteOwner|CanRDP|ExecuteDCOM|AllowedToDelegate|ReadLAPSPassword|Contains|GpLink|AddAllowedToAct|AllowedToAct|SQLAdmin*1..]->(m)) RETURN p
 ```
 
 ### Shortest path from any owned principal to unconstrained delegation system
 
 ```
+MATCH (n {owned: true}),(m {unconstraineddelegation: true}),p=shortestPath((n)-[r*1..]->(m)) RETURN p
+
 MATCH (n {owned: true}),(m {unconstraineddelegation: true}),p=shortestPath((n)-[r:MemberOf|HasSession|AdminTo|AllExtendedRights|AddMember|ForceChangePassword|GenericAll|GenericWrite|Owns|WriteDacl|WriteOwner|CanRDP|ExecuteDCOM|AllowedToDelegate|ReadLAPSPassword|Contains|GpLink|AddAllowedToAct|AllowedToAct|SQLAdmin*1..]->(m)) RETURN p
 ```

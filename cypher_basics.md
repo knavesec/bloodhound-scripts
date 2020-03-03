@@ -4,7 +4,22 @@
 
 Neo4j is the backend database that combines nodes and relationship edges to display and connect data in new ways. In this case, BloodHound nodes are AD objects and edges are ACL and privilege escalation relationships between the nodes. This provides lateral movement and pivoting
 
-### Node Type
+### Nodes and Node Types
+
+Nodes are essentially just an object that holds data. In Bloodhound, these are Active Directory objects
+
+```
+-----------------
+|node     -data |
+|         -data2|
+|         -data3|
+-----------------
+```
+
+Return all nodes
+```
+MATCH (n) RETURN n
+```
 
 Creating a raw node is simple, but it's often beneficial to group nodes into certain types. These types can be queried during searches and grouped easier.
 
@@ -67,6 +82,20 @@ Notes:
 - Syntax to look at a relationship with edges `(node)-[edge]->(node)`
 - Note the `>` to indicate direction of the edge in the first (which requires a direction) but not the second (which is general and doesn't require a direction)
 - Additional way to specify attributes `{attr:value}`
+
+
+Traversing from node to node is commonly called a hop, and we can specify how many hops we would like to return within the edge declaration
+1. One hop
+2. One to three hops
+3. All hops
+
+```
+1. MATCH (n:User), (m:Computer) MATCH p=(n)-[r:AdminTo|HasSession]->(m)  RETURN p
+
+2. MATCH (n:User), (m:Computer) MATCH p=(n)-[r:AdminTo|HasSession*1..3]->(m)  RETURN p
+
+3. MATCH (n:User), (m:Computer) MATCH p=(n)-[r:AdminTo|HasSession*1..]->(m)  RETURN p
+```
 
 BloodHound general edges:
 - AdminTo
