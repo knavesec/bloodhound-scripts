@@ -91,7 +91,7 @@ Add your Neo4j username and password to the start of the script
 
 ```
 usage: get_info.py [-h]
-                   (--spns | --users | --da | --unconstrained | --adminto UNAME | --adminsof COMP)
+                   (--spns | --users | --comps | --da | --unconstrained | --adminto UNAME | --adminsof COMP)
 
 Helper script to pull lists of information from BloodHound for use
 
@@ -101,7 +101,8 @@ optional arguments:
 Main Arguments:
   --spns           Return a list of computers configured with a SPN
                    relationship
-  --users          Return a list of all users
+  --users          Return a list of all domain users
+  --comps          Return a list of all domain computers
   --da             Return a list of all Domain Admins
   --unconstrained  Return a list of all objects configured with Unconstrained
                    Delegation
