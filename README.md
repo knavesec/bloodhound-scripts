@@ -6,7 +6,7 @@
 
 Markup file with two parts:
 1. Describe in short some of the basics of Cypher queries and how they apply to BloodHound. The goal is to teach enough to get started creating custom queries
-2. List custom queries that could be helpful in maximizing BH usage 
+2. List custom queries that could be helpful in maximizing BH usage
 
 ## add_owned.py
 
@@ -40,20 +40,32 @@ python3 add_owned.py --comp ./computerfile
 ```
 
 Example files. Note: the name of the computers/users to add must match usernames and computer names already in BloodHound
-- users must have @domain.local appended
-- computers must have .domain.local appended (also cannot be added by IP)
 
 Users:
+- must have @domain.local appended
 ```
 user01@domain.local      <- will be added
 user02@domain.local      <- will be added
 user02                   <- will not be added  
 ```
 Computers:
+- must have .domain.local appended for Hostnames
+- adding a list of both IPs and Hostnames for each computer is most effective, sometimes due to AD config or BH data the computer name is stored as the IP rather than the hostname
 ```
 computer01.domain.local  <- will be added
 computer02.domain.local  <- will be added
 computer02               <- will not be added
+
+# Assume test.domain.local = 10.10.10.1
+# test.domain.local is not a domain computer, and therefore not stored in AD
+# A user has a session on 10.10.10.1
+# Computer with name 10.10.10.1 (not test) is created within Bloodhound
+# You've owned test.domain.local/10.10.10.1 and pretend the user session is a DA
+# Without adding the IP as owned BH will not show that path to DA
+# Best case is to try and add both
+
+test.domain.local        <- will not be added
+10.10.10.1               <- will be added
 ```
 
 ## get_info.py

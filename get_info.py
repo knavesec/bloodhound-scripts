@@ -15,6 +15,7 @@ def do_query(args):
     queries = {
         "spns" : "MATCH p=(n:User)-[r:HasSPNConfigured]-(m) RETURN m.name",
         "users" : "MATCH (n:User) RETURN n.name",
+        "comps" : "MATCH (n:Computer) RETURN n.name",
         "das" : "MATCH p =(n:User)-[r:MemberOf*1..]->(g:Group) where g.name=~'DOMAIN ADMINS@.*' return n.name",
         "unconstrained" : "MATCH (n) WHERE n.unconstraineddelegation=TRUE RETURN n.name",
         "local-admin" : "MATCH p=shortestPath((m:User {{name:\"{uname}\"}})-[r:AdminTo|MemberOf*1..]->(n:Computer)) return n.name",
@@ -24,6 +25,8 @@ def do_query(args):
     query = ""
     if (args.users):
         query = queries["users"]
+    elif (args.comps):
+        query = queries["comps"]
     elif (args.spns):
         query = queries["spns"]
     elif (args.das):
@@ -57,7 +60,8 @@ def main():
 
     mutex_group = group.add_mutually_exclusive_group(required=True)
     mutex_group.add_argument("--spns",dest="spns",default=False,action="store_true",help="Return a list of computers configured with a SPN relationship")
-    mutex_group.add_argument("--users",dest="users",default=False,action="store_true",help="Return a list of all users")
+    mutex_group.add_argument("--users",dest="users",default=False,action="store_true",help="Return a list of all domain users")
+    mutex_group.add_argument("--comps",dest="comps",default=False,action="store_true",help="Return a list of all domain computers")
     mutex_group.add_argument("--da",dest="das",default=False,action="store_true",help="Return a list of all Domain Admins")
     mutex_group.add_argument("--unconstrained",dest="unconstrained",default=False,action="store_true",help="Return a list of all objects configured with Unconstrained Delegation")
     mutex_group.add_argument("--adminto",dest="uname",default="",help="Return a list of computers that UNAME is a local administrator to")

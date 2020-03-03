@@ -38,7 +38,7 @@ def main():
     group = parser.add_argument_group("Main Arguments")
 
     mutex_group = group.add_mutually_exclusive_group(required=True)
-    mutex_group.add_argument("--comp",dest="add_comp",default=False,action="store_true",help="Designation that the owned items are computers")
+    mutex_group.add_argument("--comp",dest="add_comp",default=False,action="store_true",help="Designation that the owned items are computers. Note: Using both IP and Hostname for a computer is most effective overall, see readme")
     mutex_group.add_argument("--user",dest="add_user",default=False,action="store_true",help="Designation that the owned items are users")
 
     parser.add_argument("filename")
